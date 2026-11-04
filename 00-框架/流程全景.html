@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>AI 视频生产流程 · 当前状态</title>
+<style>
+  :root{
+    --ok:#16a34a; --half:#d97706; --work:#2563eb; --empty:#dc2626; --skip:#64748b;
+    --line:var(--border,#e5e7eb); --ink:var(--foreground,#111827);
+    --ink2:var(--muted-foreground,#6b7280); --card:var(--card,#fff); --chip:var(--accent,#f3f4f6);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    width:940px; padding:22px 24px 26px;
+    font-family:-apple-system,"PingFang SC","Helvetica Neue",system-ui,sans-serif;
+    color:var(--ink); background:transparent; font-size:12.5px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1{font-size:19px;font-weight:700;margin:0 0 4px;letter-spacing:-.2px}
+  .sub{color:var(--ink2);font-size:12px;margin:0 0 6px}
+  .sub b{color:var(--ink)}
+  .legend{display:flex;gap:13px;flex-wrap:wrap;margin:12px 0 16px;font-size:11.5px;color:var(--ink2)}
+  .legend span{display:inline-flex;align-items:center;gap:5px}
+  .dot{width:8px;height:8px;border-radius:2px;display:inline-block}
+  .b-ok{background:var(--ok)}.b-half{background:var(--half)}.b-work{background:var(--work)}
+  .b-empty{background:var(--empty)}.b-skip{background:var(--skip)}
+
+  .phase{margin-bottom:14px}
+  .ph{display:flex;align-items:baseline;gap:8px;margin:0 0 7px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+  .pn{font-size:10px;font-weight:700;letter-spacing:.08em;color:#fff;background:var(--ink);padding:1px 6px;border-radius:3px;opacity:.85}
+  .pt{font-size:13px;font-weight:700}
+  .pd{font-size:10.5px;color:var(--ink2);margin-left:auto}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:8px 10px;border-left-width:3px;border-left-style:solid}
+  .row{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+  .idx{font-size:9.5px;font-weight:700;color:var(--ink2);min-width:13px;font-variant-numeric:tabular-nums}
+  .name{font-size:12px;font-weight:650;flex:1}
+  .tag{font-size:9px;font-weight:600;color:#fff;padding:1px 5px;border-radius:3px;white-space:nowrap}
+  .ev{font-size:10.5px;color:var(--ink2);padding-left:19px}
+  .ev b{color:var(--ink);font-weight:600}
+  .own{font-size:9.5px;color:var(--ink2);padding-left:19px;margin-top:1px}
+  code{background:var(--chip);padding:0 4px;border-radius:3px;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:var(--ink)}
+
+  .bar{display:flex;height:26px;border-radius:5px;overflow:hidden;margin:16px 0 6px;border:1px solid var(--line)}
+  .bar div{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;white-space:nowrap}
+  .barnum{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink2);margin-bottom:16px}
+
+  .blocks{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .blk{border:1px solid var(--line);border-radius:7px;padding:10px 12px;background:var(--card)}
+  .blk h3{font-size:11.5px;margin:0 0 6px;font-weight:700;display:flex;align-items:center;gap:6px}
+  .blk h3::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--empty)}
+  .blk.mid h3::before{background:var(--half)}
+  .blk ol,.blk ul{margin:0;padding-left:15px;font-size:11px;color:var(--ink2)}
+  .blk li{margin-bottom:3px}
+  .blk b{color:var(--ink);font-weight:650}
+  .foot{margin-top:12px;font-size:10px;color:var(--ink2);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<h1>AI 视频生产流程 · 当前状态</h1>
+<p class="sub">15 个节点 · <b>4 个真跑通</b> · 5 个有 skill 未验证 · 3 个在建 · 3 个暂不涉及。状态按 2026-11-04。<br>
+  另设 <b>6 道门禁</b>，其中「客户确认」是生成前必须过的一道（见 00-框架/门禁表）。</p>
+
+<div class="legend">
+  <span><i class="dot b-ok"></i>跑过 · 有产物</span>
+  <span><i class="dot b-half"></i>有文档 · 未验证</span>
+  <span><i class="dot b-work"></i>在建</span>
+  <span><i class="dot b-empty"></i>空白 / 占位</span>
+  <span><i class="dot b-skip"></i>暂不涉及</span>
+</div>
+
+<!-- 前制 -->
+<div class="phase">
+  <div class="ph"><span class="pn">01</span><span class="pt">前制 · 需求 → 素材</span><span class="pd">这一段是真跑过的</span></div>
+  <div class="grid">
+    <div class="card" style="border-left-color:var(--ok)">
+      <div class="row"><span class="idx">1</span><span class="name">需求确认</span><span class="tag b-ok">跑过</span></div>
+      <div class="ev">一表通 + 推导册 · <b>≥4 次</b>真实调用</div>
+      <div class="own">client-brief</div>
+    </div>
+    <div class="card" style="border-left-color:var(--ok)">
+      <div class="row"><span class="idx">2</span><span class="name">素材清单</span><span class="tag b-ok">跑过</span></div>
+      <div class="ev">七章清单 + ★开工包 · <b>某驾校改过 4 版</b></div>
+      <div class="own">client-brief + checklist-rules</div>
+    </div>
+    <div class="card" style="border-left-color:var(--ok)">
+      <div class="row"><span class="idx">3</span><span class="name">客户采集</span><span class="tag b-ok">跑过</span></div>
+      <div class="ev">四类素材 SOP · <b>今天才补齐</b></div>
+      <div class="own">capture-sop</div>
+    </div>
+    <div class="card" style="border-left-color:var(--half)">
+      <div class="row"><span class="idx">4</span><span class="name">素材回收</span><span class="tag b-half">半</span></div>
+      <div class="ev">六段话术有 · <b>执行未记录</b></div>
+      <div class="own">ask-script</div>
+    </div>
+  </div>
+</div>
+
+<!-- 创意 -->
+<div class="phase">
+  <div class="ph"><span class="pn">02</span><span class="pt">创意 · 脚本 → 提示词</span><span class="pd">断点最密的一段</span></div>
+  <div class="grid">
+    <div class="card" style="border-left-color:var(--ok)">
+      <div class="row"><span class="idx">5</span><span class="name">参考片拆解</span><span class="tag b-ok">跑过</span></div>
+      <div class="ev">六层拆解法 · <b>1 次</b>（净水机）</div>
+      <div class="own">annotate-video-language</div>
+    </div>
+    <div class="card" style="border-left-color:var(--half)">
+      <div class="row"><span class="idx">6</span><span class="name">脚本改造</span><span class="tag b-half">有 skill</span></div>
+      <div class="ev">判档 + 两种病 + 六类时长核算 · <b>0 次实测</b></div>
+      <div class="own">shortvideo-script-doctor v0.7</div>
+    </div>
+    <div class="card" style="border-left-color:var(--half)">
+      <div class="row"><span class="idx">7</span><span class="name">提示词编译</span><span class="tag b-half">有 skill</span></div>
+      <div class="ev">四模式 + 七类冲突 + 经验库 · <b>0 次生成验证</b></div>
+      <div class="own">ai-visual-director v3.7</div>
+    </div>
+    <div class="card" style="border-left-color:var(--half)">
+      <div class="row"><span class="idx">8</span><span class="name">身份资产</span><span class="tag b-half">人物+声音</span></div>
+      <div class="ev">四列参考图 + 声音样本 ≤15s · <b>未验证</b></div>
+      <div class="own">character-reference-sheet v1.0</div>
+    </div>
+  </div>
+</div>
+
+<!-- 素材技术 -->
+<div class="phase">
+  <div class="ph"><span class="pn">03</span><span class="pt">素材技术 · 三块空白</span><span class="pd">学生 A 在补</span></div>
+  <div class="grid">
+    <div class="card" style="border-left-color:var(--work)">
+      <div class="row"><span class="idx">9</span><span class="name">素材合规化</span><span class="tag b-work">在建</span></div>
+      <div class="ev">冻帧 / 裁切 / 转正 · <b>无标准</b></div>
+      <div class="own">学生 A · 能力卡</div>
+    </div>
+    <div class="card" style="border-left-color:var(--work)">
+      <div class="row"><span class="idx">10</span><span class="name">图像资产</span><span class="tag b-work">在建</span></div>
+      <div class="ev">定妆图 / UI 合成 · <b>无标准</b></div>
+      <div class="own">学生 A · 能力卡</div>
+    </div>
+    <div class="card" style="border-left-color:var(--work)">
+      <div class="row"><span class="idx">11</span><span class="name">音频工程</span><span class="tag b-work">在建</span></div>
+      <div class="ev">分离 / 变调 / 音效 · <b>无标准</b></div>
+      <div class="own">学生 A · 能力卡</div>
+    </div>
+  </div>
+</div>
+
+<!-- 生产 -->
+<div class="phase">
+  <div class="ph"><span class="pn">04</span><span class="pt">生产 · 生成 → 交付</span><span class="pd">这一段基本是纸面</span></div>
+  <div class="grid">
+    <div class="card" style="border-left-color:var(--skip)">
+      <div class="row"><span class="idx">12</span><span class="name">生成</span><span class="tag b-skip">人工</span></div>
+      <div class="ev"><b>明天首次试</b> · 无适配器</div>
+      <div class="own">用户自己在平台点</div>
+    </div>
+    <div class="card" style="border-left-color:var(--half)">
+      <div class="row"><span class="idx">13</span><span class="name">单镜验收</span><span class="tag b-half">有单</span></div>
+      <div class="ev">8 项 + 四分支 · <b>0 次执行</b></div>
+      <div class="own">单镜验收单</div>
+    </div>
+    <div class="card" style="border-left-color:var(--skip)">
+      <div class="row"><span class="idx">14</span><span class="name">剪辑</span><span class="tag b-skip">暂不</span></div>
+      <div class="ev">老师下册覆盖方法</div>
+      <div class="own">工具待定</div>
+    </div>
+    <div class="card" style="border-left-color:var(--skip)">
+      <div class="row"><span class="idx">15</span><span class="name">交付 / 复盘</span><span class="tag b-skip">暂不</span></div>
+      <div class="ev">交付包 7 项已备 · 未启用</div>
+      <div class="own">交付包清单</div>
+    </div>
+  </div>
+</div>
+
+<div class="bar">
+  <div style="width:27%;background:var(--ok)">4 跑通</div>
+  <div style="width:33%;background:var(--half)">5 有 skill</div>
+  <div style="width:20%;background:var(--work)">3 在建</div>
+  <div style="width:19%;background:var(--skip)">3 暂不</div>
+</div>
+<div class="barnum"><span>真跑通 4 / 15 = 27%</span><span>有 skill 未验证 5 / 15 = 33%</span><span>在建 3 / 15</span></div>
+
+<div class="blocks">
+  <div class="blk">
+    <h3>三个阻断卡点</h3>
+    <ol>
+      <li><b>后四道门没执行过</b> —— 标准都写了，只有门 1 跑过真实项目</li>
+      <li><b>0 次真实生成</b> —— 06/07/08 三个 skill 都还没验过</li>
+      <li><b>案例目录空着</b> —— 没有走完全流程的记录</li>
+    </ol>
+  </div>
+  <div class="blk mid">
+    <h3>上架 GitHub 前必须补</h3>
+    <ul>
+      <li>一次真实生成结果回填（哪怕失败）</li>
+      <li>六列 / 三列接口定稿</li>
+      <li>每条镜头卡加「验收点」一行</li>
+      <li>问题回流模板（学生填什么）</li>
+      <li>README + 目录 + 命名规则</li>
+    </ul>
+  </div>
+</div>
+
+<div class="foot"><span>数据源：10 份培训文档 + 4 份提示词规范 + 11 项 skill 资产实测</span><span>2026-11-02</span></div>
+
+</body>
+</html>
