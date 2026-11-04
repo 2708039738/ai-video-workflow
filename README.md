@@ -17,6 +17,8 @@
 
 **所以这个仓库覆盖 01–09 九个环节（前制段）。**
 
+📊 [流程图在线预览](https://htmlpreview.github.io/?https://github.com/Su555-K/ai-video-workflow/blob/main/00-%E6%A1%86%E6%9E%B6/%E6%B5%81%E7%A8%8B%E5%85%A8%E6%99%AF.html)（第三方渲染服务，打不开就看仓库里的 HTML 源码）
+
 ```
 01 需求 → 02 清单 → 03 采集 → 04 回收
 → 05 身份资产 → 06 参考拆解 → 07 脚本改造
