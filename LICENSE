@@ -1,0 +1,22 @@
+本仓库内容（文档、流程图、模板、话术）采用
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+（CC BY-NC-SA 4.0）许可。
+
+你可以：
+- 自由复制、分发、修改本仓库内容
+- 用于个人学习、团队内部培训
+
+你必须：
+- 署名（注明来源为本仓库）
+- 非商业使用（不得直接用于收费课程、付费社群、商业交付模板销售）
+- 相同方式共享（修改后的版本须采用同样的许可）
+
+完整协议：https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.zh-Hans
+
+────────────────────────────────────────
+例外（不适用上述许可）：
+
+`01-流程/07-脚本改造/` 目录内的 shortvideo-script-doctor skill
+保留其原始 MIT 许可，见该目录下的 LICENSE 文件。
+
+商业授权咨询：请在 Issues 里说明用途。
